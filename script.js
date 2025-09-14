@@ -1,67 +1,66 @@
-:root {
-  --bg:#0f1724;
-  --card:#0b1220;
-  --muted:#9aa5b1;
-  --accent:#2dd4bf;
-  --accent-2:#60a5fa;
-  font-family: Inter, sans-serif;
+// Sample flight data
+const SAMPLE_FLIGHTS = [
+  { callsign:'UAL102', from:'JFK', to:'LHR', lat1:40.6413, lon1:-73.7781, lat2:51.47, lon2:-0.4543, passengers:200 },
+  { callsign:'DL456', from:'ATL', to:'LAX', lat1:33.6407, lon1:-84.4277, lat2:33.9416, lon2:-118.4085, passengers:150 },
+  { callsign:'SWA701', from:'LAX', to:'SFO', lat1:33.9416, lon1:-118.4085, lat2:37.6213, lon2:-122.3790, passengers:160 }
+];
+
+const EMISSION_FACTOR = 0.11; // kg CO₂ / pax-km
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
-html,body {
-  height:100%;
-  margin:0;
-  background:linear-gradient(180deg,#041026 0%, #051727 100%);
-  color:#e6eef6;
+function estimate(flight){
+  const dist = haversineKm(flight.lat1, flight.lon1, flight.lat2, flight.lon2);
+  const perPax = dist*EMISSION_FACTOR;
+  const total = perPax*(flight.passengers||150);
+  return {distance:Math.round(dist), total:Math.round(total)};
 }
 
-.app {
-  display:grid;
-  grid-template-columns: 1fr 420px;
-  gap:18px;
-  padding:18px;
-  height:100vh;
-  box-sizing:border-box;
+// Map setup
+const map = L.map('map').setView([20,0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+const flightLayer = L.layerGroup().addTo(map);
+
+// Chart
+const ctx = document.getElementById('emChart');
+const chart = new Chart(ctx, {
+  type:'bar',
+  data:{labels:[],datasets:[{label:'kg CO₂',data:[],backgroundColor:'#60a5fa'}]}
+});
+
+// Render flights
+function renderFlights(flights){
+  flightLayer.clearLayers();
+  let totals=0;
+
+  flights.forEach(f=>{
+    const e = estimate(f);
+    totals += e.total;
+    // draw line
+    L.polyline([[f.lat1,f.lon1],[f.lat2,f.lon2]], {color:'#2dd4bf'}).addTo(flightLayer)
+      .bindPopup(`${f.callsign} ${f.from}→${f.to}<br>${e.distance} km<br>${e.total} kg CO₂`);
+  });
+
+  document.getElementById('totalEmissions').textContent = totals;
+  document.getElementById('avgEmission').textContent = Math.round(totals/flights.length);
+  document.getElementById('flightCount').textContent = flights.length;
+  document.getElementById('updatedAt').textContent = new Date().toLocaleTimeString();
+
+  // update chart
+  chart.data.labels = flights.map(f=>f.callsign);
+  chart.data.datasets[0].data = flights.map(f=>estimate(f).total);
+  chart.update();
 }
 
-.left, .right {
-  background:rgba(255,255,255,0.04);
-  border-radius:12px;
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+// Initial load
+renderFlights(SAMPLE_FLIGHTS);
 
-.map { height: 100%; border-radius:10px; }
-
-.btn {
-  background:linear-gradient(180deg,var(--accent) 0%, var(--accent-2) 100%);
-  color:#04202b;
-  padding:8px 12px;
-  border-radius:8px;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-}
-
-.small {
-  font-size:13px;
-  padding:8px 10px;
-  background:rgba(255,255,255,0.03);
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.02);
-  color:var(--muted);
-}
-
-.stat-grid { display:flex; gap:8px; }
-.stat { flex:1; padding:10px; border-radius:10px; background:rgba(255,255,255,0.02); }
-.stat .value { font-weight:700; font-size:20px; color:#e6f9f3; }
-
-.list { display:flex; flex-direction:column; gap:8px; }
-
-.route-row {
-  display:flex; justify-content:space-between;
-  padding:8px; border-radius:8px;
-  background: rgba(255,255,255,0.05);
-  font-size:13px;
+// Refresh button just re-renders for demo
+document.getElementById('refreshBtn').addEventListener('click',()=>renderFlights(SAMPLE_FLIGHTS));
 
