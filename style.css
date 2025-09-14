@@ -1,1 +1,102 @@
+/* General styles */
+:root {
+  --bg: #0f1724;
+  --card: #1a2233;
+  --muted: #9aa5b1;
+  --accent: #2dd4bf;
+  --accent-2: #60a5fa;
+  font-family: 'Inter', sans-serif;
+}
 
+body {
+  margin: 0;
+  background: var(--bg);
+  color: white;
+}
+
+/* Grid layout */
+.app {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 16px;
+  padding: 16px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Left & Right sections */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* Header */
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.header p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Stats */
+.stat-grid {
+  display: flex;
+  gap: 8px;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+}
+
+.stat .value {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent-2);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Map */
+.map {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--muted);
+}
+
+/* Leaderboard & Chart */
+.list {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+}
