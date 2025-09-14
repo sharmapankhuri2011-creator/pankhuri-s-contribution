@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Air Traffic Emissions Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Left side -->
+    <div class="left">
+      <div class="header">
+        <h1>Air Traffic Emissions Dashboard</h1>
+        <p class="muted">Real-time aviation CO₂ impact</p>
+      </div>
+      <div id="map" class="card map">
+        [Map Placeholder]
+      </div>
+    </div>
 
+    <!-- Right side -->
+    <div class="right">
+      <!-- Summary Stats -->
+      <div class="stat-grid">
+        <div class="stat card">
+          <p class="muted">Total Emissions (kg CO₂)</p>
+          <div class="value" id="totalEmissions">—</div>
+        </div>
+        <div class="stat card">
+          <p class="muted">Avg per Flight (kg)</p>
+          <div class="value" id="avgEmission">—</div>
+        </div>
+        <div class="stat card">
+          <p class="muted">Flights Loaded</p>
+          <div class="value" id="flightCount">—</div>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="card">
+        <h3>Top routes by emissions</h3>
+        <div id="topRoutes" class="list">
+          <p class="muted">[Leaderboard Placeholder]</p>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="card">
+        <h3>Emissions by route</h3>
+        <div id="chartPlaceholder">[Chart Placeholder]</div>
+      </div>
+    </div>
+  </div>
+</body>
