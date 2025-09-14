@@ -63,4 +63,3 @@ renderFlights(SAMPLE_FLIGHTS);
 
 // Refresh button just re-renders for demo
 document.getElementById('refreshBtn').addEventListener('click',()=>renderFlights(SAMPLE_FLIGHTS));
-
