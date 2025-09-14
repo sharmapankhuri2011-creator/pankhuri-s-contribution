@@ -1,75 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Air Traffic Emissions Dashboard — Starter</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- Our CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Tracker Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    <div class="left">
-      <div class="header">
-        <div>
-          <h1>Air Traffic Emissions Dashboard</h1>
-          <p class="muted">Interactive map of sample flights with CO₂ estimates</p>
-        </div>
-        <div class="buttons">
-          <button class="btn" id="refreshBtn">Refresh</button>
-          <button class="small" id="demoToggle">Demo data</button>
-        </div>
-      </div>
-
-      <div class="map card" id="map"></div>
-      <div class="muted">Click a flight marker to view estimated emissions.</div>
-    </div>
-
-    <div class="right">
-      <div class="summary-header">
-        <h1>Summary</h1>
-        <p class="muted">Totals and leaderboard from the loaded flights</p>
-        <div class="muted">Updated: <span id="updatedAt">—</span></div>
-      </div>
-
-      <div class="stat-grid">
-        <div class="stat card">
-          <div class="muted">Total Emissions (kg CO₂)</div>
-          <div class="value" id="totalEmissions">0</div>
-        </div>
-        <div class="stat card">
-          <div class="muted">Avg per Flight (kg)</div>
-          <div class="value" id="avgEmission">0</div>
-        </div>
-        <div class="stat card">
-          <div class="muted">Flights Loaded</div>
-          <div class="value" id="flightCount">0</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Top routes by emissions</h2>
-        <div id="topRoutes" class="list"></div>
-      </div>
-
-      <div class="card">
-        <h2>Emissions by route</h2>
-        <canvas id="emChart" height="140"></canvas>
-      </div>
+  <div class="sidebar">
+    <h2>FlightTracker</h2>
+    <p class="subtitle">Carbon Footprint Monitor</p>
+    <nav>
+      <button class="nav-btn active">Dashboard</button>
+      <button class="nav-btn">Add Flight</button>
+    </nav>
+    <div class="impact-box">
+      <h3>This Year</h3>
+      <p>Track Your Impact</p>
+      <small>Every flight counts</small>
     </div>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <div class="main">
+    <header>
+      <h1>Your Flight Carbon Footprint</h1>
+      <p>Track, understand, and reduce your aviation environmental impact</p>
+      <button id="log-flight">+ Log New Flight</button>
+      <span class="flights-tracked">5 flights tracked</span>
+    </header>
 
-  <!-- Our JS -->
+    <section class="stats">
+      <div class="stat-box">
+        <h3>Total Flights</h3>
+        <p>5</p>
+      </div>
+      <div class="stat-box">
+        <h3>Total Distance</h3>
+        <p>22.5K km</p>
+      </div>
+      <div class="stat-box">
+        <h3>Total CO₂ Emissions</h3>
+        <p>4838.8 kg</p>
+      </div>
+      <div class="stat-box">
+        <h3>Trees to Offset</h3>
+        <p>220 trees</p>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="chart-box">
+        <h3>Monthly CO₂ Emissions (2025)</h3>
+        <canvas id="emissionsChart"></canvas>
+      </div>
+
+      <div class="analysis">
+        <h3>Impact Analysis</h3>
+        <h4>Top Emission Routes</h4>
+        <ul>
+          <li>London → ... <span class="highlight">2868.0 kg</span></li>
+          <li>Dubai → Si... <span class="highlight">896.7 kg</span></li>
+          <li>New York → ... <span class="highlight">837.8 kg</span></li>
+          <li>Paris → Bar... <span class="highlight">141.3 kg</span></li>
+          <li>San Francisc... <span class="highlight">95.0 kg</span></li>
+        </ul>
+        <h4>Put It In Perspective</h4>
+        <p>🚗 Car equivalent: 0 km</p>
+        <p>🌳 Trees needed: 0</p>
+        <p>⚡ Home energy: 0 months</p>
+      </div>
+    </section>
+
+    <section class="recent-flights">
+      <h3>Recent Flights</h3>
+      <div class="flight-card">
+        <p><strong>Dubai → Singapore</strong> • Emirates</p>
+        <small>Dec 17, 2024 • 5,978 km • business, economy</small>
+        <span class="highlight">896.7 kg CO₂</span>
+      </div>
+      <div class="flight-card">
+        <p><strong>Paris → Barcelona</strong> • Air France</p>
+        <small>Nov 1, 2024 • 831 km</small>
+        <span class="highlight">141.3 kg CO₂</span>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+       
